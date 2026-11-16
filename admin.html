@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Noreen Portfolio Management</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&family=Playfair+Display:ital,wght@0,600;1,400;1,700&family=Cinzel:wght@600;700&family=Dancing+Script:wght@600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ================= LOGIN SCREEN ================= -->
+  <div class="login-wrap" id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <i class="ri-shield-keyhole-line"></i>
+      </div>
+      <h2 style="font-size: 1.6rem; margin-bottom: 0.5rem;">Admin Access</h2>
+      <p style="color: var(--admin-muted); font-size: 0.9rem; margin-bottom: 1.75rem;">
+        Noreen — eCommerce Account Lead Portfolio Management
+      </p>
+
+      <form id="admin-login-form">
+        <div class="admin-form-group" style="text-align: left;">
+          <label class="admin-label">Admin Password</label>
+          <div style="position: relative;">
+            <input type="password" id="admin-password-input" class="admin-input" placeholder="Enter password (default: admin0987)" required autocomplete="current-password">
+            <button type="button" id="toggle-pw-visibility" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--admin-muted); cursor:pointer;">
+              <i class="ri-eye-line"></i>
+            </button>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--admin-muted); margin-top: 6px;">
+            Default password: <code style="color: var(--admin-accent);">admin0987</code> (Can be changed in Security Tab)
+          </div>
+        </div>
+
+        <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; padding: 0.85rem;">
+          <i class="ri-lock-unlock-line"></i>
+          <span>Login to Dashboard</span>
+        </button>
+        <div id="login-error" style="display:none; color: var(--admin-danger); margin-top: 1rem; font-size: 0.88rem;"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= AUTHENTICATED ADMIN DASHBOARD ================= -->
+  <div class="admin-layout" id="admin-dashboard" style="display: none;">
+    
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: var(--admin-primary); display: flex; align-items: center; justify-content: center; color: #fff;">
+            <i class="ri-dashboard-fill"></i>
+          </div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">Noreen Admin</div>
+            <div style="font-size: 0.72rem; color: var(--admin-muted);">eCommerce Lead</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="admin-nav-item active" data-tab="tab-flyers"><i class="ri-advertisement-line"></i> Large Flyers & Awards</a>
+        <a class="admin-nav-item" data-tab="tab-profile"><i class="ri-user-star-line"></i> Profile & Photo</a>
+        <a class="admin-nav-item" data-tab="tab-header-announcement"><i class="ri-notification-3-line"></i> Header & Announcement</a>
+        <a class="admin-nav-item" data-tab="tab-themes"><i class="ri-palette-line"></i> 10 Themes & Any Font</a>
+        <a class="admin-nav-item" data-tab="tab-hero"><i class="ri-flashlight-line"></i> Hero & Badges</a>
+        <a class="admin-nav-item" data-tab="tab-platforms"><i class="ri-shopping-cart-line"></i> Platforms (OnBuy/eBay)</a>
+        <a class="admin-nav-item" data-tab="tab-skills"><i class="ri-tools-line"></i> Skills Manager</a>
+        <a class="admin-nav-item" data-tab="tab-education"><i class="ri-graduation-cap-line"></i> Education (VU Psych)</a>
+        <a class="admin-nav-item" data-tab="tab-projects"><i class="ri-folder-star-line"></i> Projects & Reference Proof</a>
+        <a class="admin-nav-item" data-tab="tab-experience"><i class="ri-briefcase-line"></i> Experience Timeline</a>
+        <a class="admin-nav-item" data-tab="tab-custom-sections"><i class="ri-layout-masonry-line"></i> Custom Section Builder</a>
+        <a class="admin-nav-item" data-tab="tab-testimonials"><i class="ri-feedback-line"></i> Testimonials & FAQ</a>
+        <a class="admin-nav-item" data-tab="tab-footer"><i class="ri-layout-bottom-line"></i> Footer Editor</a>
+        <a class="admin-nav-item" data-tab="tab-security"><i class="ri-shield-keyhole-line"></i> Security & Password</a>
+        <a class="admin-nav-item" data-tab="tab-json"><i class="ri-file-code-line"></i> JSON Import & Export</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" target="_blank" class="btn-admin btn-admin-secondary" style="width: 100%;">
+          <i class="ri-external-link-line"></i> View Live Site
+        </a>
+        <button id="btn-logout" class="btn-admin btn-admin-danger" style="width: 100%;">
+          <i class="ri-logout-box-r-line"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <h2 style="font-size: 1.25rem; font-weight: 700;" id="active-tab-title">Large Flyers & Awards Showcase</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button id="btn-save-all" class="btn-admin btn-admin-success">
+            <i class="ri-save-3-line"></i> Save All Changes
+          </button>
+        </div>
+      </header>
+
+      <div class="admin-content-area">
+
+        <!-- TAB: PROMINENT LARGE FLYERS & AWARDS SHOWCASE -->
+        <div class="tab-pane active" id="tab-flyers">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title"><i class="ri-advertisement-fill"></i> Hero Flyers, Awards & Announcements</h3>
+                <p style="color:var(--admin-muted); font-size:0.85rem; margin-top:3px;">
+                  Add big, prominent promotional flyers, awards recognition, and limited-time audits shown right at the top of the site.
+                </p>
+              </div>
+              <button class="btn-admin btn-admin-primary btn-sm" id="btn-add-flyer">
+                <i class="ri-add-line"></i> Add New Flyer
+              </button>
+            </div>
+
+            <div class="admin-form-group">
+              <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer;">
+                <input type="checkbox" id="flyers-enabled-input" style="width:18px; height:18px;">
+                <span class="admin-label" style="margin:0;">Show Large Flyers & Awards Section on Public Website</span>
+              </label>
+            </div>
+
+            <div id="flyers-items-manager">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PROPER PROFILE & PHOTO MANAGEMENT -->
+        <div class="tab-pane" id="tab-profile">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-user-smile-line"></i> Profile Picture & Identity</h3>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:2rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+              <div>
+                <img src="" id="profile-pic-preview" alt="Preview" style="width:110px; height:110px; border-radius:50%; object-fit:cover; border:3px solid var(--admin-primary); box-shadow:0 0 15px rgba(37,99,235,0.4);">
+              </div>
+              <div style="flex-grow:1;">
+                <label class="admin-label">Upload Profile Picture from Device</label>
+                <input type="file" id="profile-pic-file-input" accept="image/*" class="admin-input" style="padding:0.4rem;">
+                <div style="margin-top:0.75rem;">
+                  <label class="admin-label">Or Paste Image URL</label>
+                  <input type="text" id="profile-input-avatar" class="admin-input" placeholder="https://images.unsplash.com/... or paste image URL">
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-grid-2">
+              <div class="admin-form-group">
+                <label class="admin-label">Full Name</label>
+                <input type="text" id="profile-input-name" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Headline Role</label>
+                <input type="text" id="profile-input-role" class="admin-input">
+              </div>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Tagline (Brief highlight)</label>
+              <input type="text" id="profile-input-tagline" class="admin-input">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Comprehensive Professional Bio</label>
+              <textarea id="profile-input-bio" class="admin-textarea" rows="4"></textarea>
+            </div>
+
+            <div class="admin-grid-3">
+              <div class="admin-form-group">
+                <label class="admin-label">Location</label>
+                <input type="text" id="profile-input-location" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Availability Status</label>
+                <input type="text" id="profile-input-availability" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Education Brief</label>
+                <input type="text" id="profile-input-edu-brief" class="admin-input">
+              </div>
+            </div>
+
+            <div class="admin-grid-3">
+              <div class="admin-form-group">
+                <label class="admin-label">WhatsApp Number (e.g. 923000000000)</label>
+                <input type="text" id="profile-input-whatsapp" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">LinkedIn Profile URL</label>
+                <input type="text" id="profile-input-linkedin" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Contact Email</label>
+                <input type="email" id="profile-input-email" class="admin-input">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: HEADER & ANNOUNCEMENT BAR -->
+        <div class="tab-pane" id="tab-header-announcement">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-notification-3-line"></i> Top Announcement Bar</h3>
+            </div>
+            
+            <div class="admin-form-group">
+              <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer;">
+                <input type="checkbox" id="announcement-enabled-input" style="width:18px; height:18px;">
+                <span class="admin-label" style="margin:0;">Enable Announcement Bar at top of site</span>
+              </label>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Announcement Text</label>
+              <input type="text" id="announcement-text-input" class="admin-input" placeholder="e.g. Open for Opportunities: Enterprise Account Management...">
+            </div>
+
+            <div class="admin-grid-3">
+              <div class="admin-form-group">
+                <label class="admin-label">Right Badge / Highlight</label>
+                <input type="text" id="announcement-badge-input" class="admin-input" placeholder="Specializing in OnBuy UK...">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">CTA Button Text</label>
+                <input type="text" id="announcement-linktext-input" class="admin-input" placeholder="Book Consultation">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">CTA Button URL</label>
+                <input type="text" id="announcement-linkurl-input" class="admin-input" placeholder="#contact">
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-layout-top-line"></i> Site Header Branding</h3>
+            </div>
+
+            <div class="admin-grid-2">
+              <div class="admin-form-group">
+                <label class="admin-label">Brand Name (Logo Text)</label>
+                <input type="text" id="header-brand-name-input" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Brand Subtitle (Logo Subtext)</label>
+                <input type="text" id="header-brand-sub-input" class="admin-input">
+              </div>
+            </div>
+
+            <div class="admin-grid-2">
+              <div class="admin-form-group">
+                <label class="admin-label">Header CTA Button Text</label>
+                <input type="text" id="header-cta-text-input" class="admin-input" placeholder="Let's Talk">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Header CTA Button Link</label>
+                <input type="text" id="header-cta-link-input" class="admin-input" placeholder="#contact">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: 10 THEMES & ANY GOOGLE FONT (BOLD + ITALIC) -->
+        <div class="tab-pane" id="tab-themes">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-palette-fill"></i> Select 1 of 10 Pre-Built Themes</h3>
+              <span style="font-size: 0.85rem; color: var(--admin-muted);">Clicking a theme applies it instantly</span>
+            </div>
+            <div class="theme-picker-grid" id="theme-picker-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title"><i class="ri-font-size"></i> Typography, Custom Fonts & Italic Styles</h3>
+                <p style="color:var(--admin-muted); font-size:0.85rem; margin-top:3px;">
+                  Choose from beautiful standard & italic script fonts, or type ANY Google font name!
+                </p>
+              </div>
+            </div>
+
+            <div class="admin-grid-2">
+              <div class="admin-form-group">
+                <label class="admin-label">Curated Fonts (Standard, Calligraphy & Italic Serif)</label>
+                <select id="setting-font-family" class="admin-select">
+                  <optgroup label="Modern Sans (Clean & Tech)">
+                    <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Default)</option>
+                    <option value="'Inter', sans-serif">Inter (Executive Corporate)</option>
+                    <option value="'Outfit', sans-serif">Outfit (Bold Geometric)</option>
+                    <option value="'Poppins', sans-serif">Poppins (Smooth Modern)</option>
+                    <option value="'Montserrat', sans-serif">Montserrat (Bold Agency)</option>
+                    <option value="'Space Grotesk', sans-serif">Space Grotesk (Cyber Tech)</option>
+                    <option value="'DM Sans', sans-serif">DM Sans (Minimalist)</option>
+                    <option value="'Syne', sans-serif">Syne (High-Impact Display)</option>
+                  </optgroup>
+                  <optgroup label="Luxury Serif & Editorial Italic">
+                    <option value="'Playfair Display', serif">Playfair Display (Luxury High-End Italic)</option>
+                    <option value="'Cinzel', serif">Cinzel (Royal Classical)</option>
+                    <option value="'Cormorant Garamond', serif">Cormorant Garamond (Editorial Serif)</option>
+                  </optgroup>
+                  <optgroup label="Script, Cursive & Calligraphy">
+                    <option value="'Dancing Script', cursive">Dancing Script (Fluid Cursive)</option>
+                    <option value="'Caveat', cursive">Caveat (Modern Handwriting)</option>
+                    <option value="'Pacifico', cursive">Pacifico (Casual Brush)</option>
+                    <option value="'Great Vibes', cursive">Great Vibes (Formal Calligraphy)</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div class="admin-form-group">
+                <label class="admin-label">Type ANY Google Font Name (Direct Custom Font)</label>
+                <input type="text" id="setting-custom-font-input" class="admin-input" placeholder="e.g. Alex Brush, Bebas Neue, Lora, Satisfy...">
+                <div style="font-size:0.75rem; color:var(--admin-muted); margin-top:4px;">
+                  Leave blank to use selection above. If entered, loads instantly from Google Fonts!
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-grid-3">
+              <div class="admin-form-group">
+                <label class="admin-label">Headings Style (Normal, Bold, Italic, Bold+Italic)</label>
+                <select id="setting-heading-style" class="admin-select">
+                  <option value="bold-italic">Bold + Italic (Recommended - Executive Authority)</option>
+                  <option value="italic">Italic (Semi-Bold Italic)</option>
+                  <option value="bold">Bold (Heavy Non-Italic)</option>
+                  <option value="normal">Normal (Clean Non-Italic)</option>
+                </select>
+              </div>
+
+              <div class="admin-form-group">
+                <label class="admin-label">Body Text Style</label>
+                <select id="setting-body-style" class="admin-select">
+                  <option value="normal">Normal (Crisp & Readable)</option>
+                  <option value="italic">Italic</option>
+                  <option value="bold">Bold</option>
+                  <option value="bold-italic">Bold + Italic</option>
+                </select>
+              </div>
+
+              <div class="admin-form-group">
+                <label class="admin-label">Headings Font Weight</label>
+                <select id="setting-heading-weight" class="admin-select">
+                  <option value="600">Semi-Bold (600)</option>
+                  <option value="700">Bold (700)</option>
+                  <option value="800">Extra Bold (800)</option>
+                  <option value="900">Black (900)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: HERO & BADGES -->
+        <div class="tab-pane" id="tab-hero">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-flashlight-line"></i> Hero Headline & Positioning</h3>
+            </div>
+            
+            <div class="admin-form-group">
+              <label class="admin-label">Trust Badge Text</label>
+              <input type="text" id="hero-input-badge" class="admin-input">
+            </div>
+
+            <div class="admin-grid-2">
+              <div class="admin-form-group">
+                <label class="admin-label">Title Prefix</label>
+                <input type="text" id="hero-input-prefix" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Title Highlight (Gradient Text)</label>
+                <input type="text" id="hero-input-highlight" class="admin-input">
+              </div>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Hero Subtitle</label>
+              <textarea id="hero-input-subtitle" class="admin-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="admin-grid-2">
+              <div class="admin-form-group">
+                <label class="admin-label">Primary CTA Button Text</label>
+                <input type="text" id="hero-input-cta-primary" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Secondary CTA Button Text</label>
+                <input type="text" id="hero-input-cta-secondary" class="admin-input">
+              </div>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Marketplace Tags (comma separated)</label>
+              <input type="text" id="hero-input-platforms" class="admin-input" placeholder="OnBuy, eBay, TikTok Shop">
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-bar-chart-2-line"></i> Hero Statistics Cards</h3>
+            </div>
+            <div class="admin-grid-2" id="hero-stats-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PLATFORMS (ONBUY, EBAY, TIKTOK SHOP) -->
+        <div class="tab-pane" id="tab-platforms">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-shopping-cart-2-line"></i> Core Marketplace Cards</h3>
+            </div>
+            <div id="platforms-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: SKILLS MANAGER -->
+        <div class="tab-pane" id="tab-skills">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title"><i class="ri-tools-line"></i> Core Competencies & Skills</h3>
+                <p style="color:var(--admin-muted); font-size:0.85rem; margin-top:3px;">Add, adjust levels, and manage your technical & leadership skill sets.</p>
+              </div>
+              <button class="btn-admin btn-admin-primary btn-sm" id="btn-add-skill-category">
+                <i class="ri-add-line"></i> Add Skill Category
+              </button>
+            </div>
+            <div id="skills-categories-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: EDUCATION (VU PSYCHOLOGY) -->
+        <div class="tab-pane" id="tab-education">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-graduation-cap-line"></i> Academic Background & Certifications</h3>
+              <button class="btn-admin btn-admin-primary btn-sm" id="btn-add-education">
+                <i class="ri-add-line"></i> Add Degree / Certification
+              </button>
+            </div>
+            <div id="education-items-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PROJECTS & CASE STUDIES (WITH REFERENCE IMAGES & LINKS) -->
+        <div class="tab-pane" id="tab-projects">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title"><i class="ri-folder-star-line"></i> Case Studies & Client Wins</h3>
+                <p style="color:var(--admin-muted); font-size:0.85rem; margin-top:3px;">Add project metrics, reference proof screenshots, and live store links.</p>
+              </div>
+              <button class="btn-admin btn-admin-primary btn-sm" id="btn-add-project">
+                <i class="ri-add-line"></i> Add New Case Study
+              </button>
+            </div>
+            <div id="projects-items-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: EXPERIENCE TIMELINE -->
+        <div class="tab-pane" id="tab-experience">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-briefcase-line"></i> Professional Career Timeline</h3>
+              <button class="btn-admin btn-admin-primary btn-sm" id="btn-add-experience">
+                <i class="ri-add-line"></i> Add Career Milestone
+              </button>
+            </div>
+            <div id="experience-items-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: DYNAMIC CUSTOM SECTION BUILDER (JO MARZI CHAHAYE ADD KAREIN) -->
+        <div class="tab-pane" id="tab-custom-sections">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title"><i class="ri-layout-masonry-line"></i> Dynamic Section Builder</h3>
+                <p style="color: var(--admin-muted); font-size: 0.85rem; margin-top: 4px;">
+                  Create, configure, reorder, and embed custom sections with images, video embeds, and cards.
+                </p>
+              </div>
+              <button class="btn-admin btn-admin-primary" id="btn-add-custom-section">
+                <i class="ri-add-circle-line"></i> Add New Section
+              </button>
+            </div>
+
+            <div id="custom-sections-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: TESTIMONIALS & FAQ -->
+        <div class="tab-pane" id="tab-testimonials">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-feedback-line"></i> Client Reviews & Testimonials</h3>
+              <button class="btn-admin btn-admin-primary btn-sm" id="btn-add-testimonial">
+                <i class="ri-add-line"></i> Add Testimonial
+              </button>
+            </div>
+            <div id="testimonials-items-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-questionnaire-line"></i> Frequently Asked Questions</h3>
+              <button class="btn-admin btn-admin-primary btn-sm" id="btn-add-faq">
+                <i class="ri-add-line"></i> Add FAQ
+              </button>
+            </div>
+            <div id="faq-items-manager">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: FOOTER EDITOR -->
+        <div class="tab-pane" id="tab-footer">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h3 class="admin-card-title"><i class="ri-layout-bottom-line"></i> Footer Content & Copyright</h3>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Footer About Text</label>
+              <textarea id="footer-about-input" class="admin-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Copyright Text</label>
+              <input type="text" id="footer-copyright-input" class="admin-input">
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: ADMIN SECURITY & PASSWORD MANAGEMENT -->
+        <div class="tab-pane" id="tab-security">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title"><i class="ri-shield-keyhole-fill"></i> Admin Security & Password Change</h3>
+                <p style="color:var(--admin-muted); font-size:0.85rem; margin-top:3px;">
+                  Change your admin dashboard login password to keep your portfolio settings completely secure.
+                </p>
+              </div>
+            </div>
+
+            <form id="change-password-form" style="max-width:550px;">
+              <div class="admin-form-group">
+                <label class="admin-label">Current Admin Password *</label>
+                <input type="password" id="pw-current-input" class="admin-input" placeholder="Enter current password" required>
+              </div>
+
+              <div class="admin-form-group">
+                <label class="admin-label">New Admin Password *</label>
+                <input type="password" id="pw-new-input" class="admin-input" placeholder="Enter new strong password" required minlength="6">
+              </div>
+
+              <div class="admin-form-group">
+                <label class="admin-label">Confirm New Password *</label>
+                <input type="password" id="pw-confirm-input" class="admin-input" placeholder="Confirm new password" required minlength="6">
+              </div>
+
+              <div style="display:flex; gap:1rem; align-items:center; margin-top:1.5rem;">
+                <button type="submit" class="btn-admin btn-admin-primary">
+                  <i class="ri-lock-password-line"></i> Update Admin Password
+                </button>
+                <button type="button" id="btn-reset-default-pw" class="btn-admin btn-admin-secondary">
+                  <i class="ri-restart-line"></i> Reset to Default (admin0987)
+                </button>
+              </div>
+
+              <div id="pw-status-msg" style="margin-top:1.25rem; font-size:0.9rem; font-weight:600; display:none;"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- TAB: JSON IMPORT & EXPORT -->
+        <div class="tab-pane" id="tab-json">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h3 class="admin-card-title"><i class="ri-file-code-line"></i> 1-Click Backup & JSON Management</h3>
+                <p style="color: var(--admin-muted); font-size: 0.85rem;">
+                  Export your entire portfolio state into a JSON file, or restore from an existing JSON backup.
+                </p>
+              </div>
+            </div>
+
+            <div class="admin-grid-2" style="margin-bottom: 2rem;">
+              <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--admin-border); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <i class="ri-download-cloud-2-line" style="font-size: 2.5rem; color: var(--admin-accent); margin-bottom: 0.75rem; display: block;"></i>
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Export Portfolio Data</h4>
+                <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                  Download your latest portfolio setup (all sections, themes, case studies) as a downloadable <code style="color:var(--admin-accent);">data.json</code> file.
+                </p>
+                <button class="btn-admin btn-admin-primary" id="btn-export-json">
+                  <i class="ri-download-2-line"></i> Download data.json
+                </button>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--admin-border); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <i class="ri-upload-cloud-2-line" style="font-size: 2.5rem; color: var(--admin-success); margin-bottom: 0.75rem; display: block;"></i>
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Import JSON File</h4>
+                <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                  Upload an existing JSON file to immediately replace and restore your portfolio content.
+                </p>
+                <label class="btn-admin btn-admin-success" style="cursor: pointer;">
+                  <i class="ri-upload-2-line"></i> Select JSON File
+                  <input type="file" id="json-file-input" accept=".json" style="display: none;">
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <label class="admin-label" style="margin: 0;">Direct JSON Code Editor</label>
+                <button class="btn-admin btn-admin-secondary btn-sm" id="btn-copy-json">
+                  <i class="ri-file-copy-line"></i> Copy JSON
+                </button>
+              </div>
+              <textarea id="raw-json-editor" class="admin-textarea" rows="14" style="font-family: monospace; font-size: 0.85rem; line-height: 1.5;"></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+              <button class="btn-admin btn-admin-danger" id="btn-reset-defaults">
+                <i class="ri-restart-line"></i> Reset All Data to Noreen's Default
+              </button>
+
+              <button class="btn-admin btn-admin-primary" id="btn-apply-raw-json">
+                <i class="ri-check-line"></i> Apply JSON Code Edits
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="admin-toast" id="admin-toast">
+    <i class="ri-checkbox-circle-fill" style="color: var(--admin-success); font-size: 1.3rem;"></i>
+    <span id="toast-message">Changes saved successfully!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/default-data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
